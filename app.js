@@ -338,7 +338,7 @@ function openLiveTrend() {
 
   // Set src only once to avoid reload every time
   if (!frame.src || frame.src === 'about:blank' || frame.src === '') {
-    frame.src = 'trend.html';
+    frame.src = 'Trend.html';
   }
 
   panel.classList.add('open');

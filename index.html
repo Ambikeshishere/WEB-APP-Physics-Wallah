@@ -1,53 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Sheet Dashboard</title>
-
-  <!-- Google Identity -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
+  <title>PW Sheet Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Login Screen -->
-<div id="loginScreen" class="login-screen">
-  <div class="login-card">
-    <h2>Welcome</h2>
+<script>
+  const user = localStorage.getItem("loggedUser");
+  if (!user) {
+    window.location.href = "login.html";
+  }
+</script>
 
-    <div id="g_id_onload"
-         data-client_id="YOUR_GOOGLE_CLIENT_ID"
-         data-callback="handleCredentialResponse">
-    </div>
+<div class="app">
 
-    <div class="g_id_signin"
-         data-type="standard"
-         data-theme="filled_black"
-         data-size="large"
-         data-shape="pill">
-    </div>
-  </div>
-</div>
-
-<!-- Dashboard -->
-<div id="app" class="app hidden">
-
-  <!-- Liquid Glass Sidebar -->
   <aside class="sidebar">
-    <div class="logo">📊</div>
+    <div class="logo">📊 PW</div>
+
     <nav>
-      <div class="menu-item active">All</div>
-      <div class="menu-item">Analysis</div>
-      <div class="menu-item">MH</div>
-      <div class="menu-item">EMI</div>
-      <div class="menu-item">BWS</div>
-      <div class="menu-item">Comms</div>
+      <div class="menu-item active">All Sheets</div>
     </nav>
+
     <button class="logout-btn" onclick="logout()">Logout</button>
   </aside>
 
-  <!-- Main Content -->
   <main class="content">
 
     <div class="topbar">

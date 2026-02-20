@@ -10,39 +10,55 @@ body {
   color: white;
 }
 
-/* Login */
-.login-screen {
-  height: 100vh;
+/* AUTH */
+
+.auth-body {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
-.login-card {
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(20px);
+.auth-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(25px);
   padding: 40px;
   border-radius: 20px;
-  text-align: center;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* App */
+.auth-card input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+.auth-card button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.secondary {
+  background: rgba(255,255,255,0.2);
+}
+
+/* APP */
+
 .app {
   display: flex;
 }
 
-.hidden {
-  display: none;
-}
-
-/* Sidebar */
 .sidebar {
   width: 240px;
   height: 100vh;
   padding: 20px;
   backdrop-filter: blur(25px);
   background: rgba(255,255,255,0.05);
-  border-right: 1px solid rgba(255,255,255,0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -50,28 +66,16 @@ body {
 
 .menu-item {
   padding: 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  margin-bottom: 8px;
-  transition: 0.2s;
-}
-
-.menu-item:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-.menu-item.active {
-  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
 }
 
 .logout-btn {
   padding: 10px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
 }
 
-/* Content */
 .content {
   flex: 1;
   padding: 30px;
@@ -90,7 +94,6 @@ body {
   width: 300px;
 }
 
-/* Pinned Grid */
 .pinned-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -99,7 +102,7 @@ body {
 }
 
 .pinned-card {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.1);
   padding: 20px;
   border-radius: 16px;
   cursor: pointer;
@@ -108,11 +111,9 @@ body {
 
 .pinned-card:hover {
   transform: translateY(-5px);
-  background: rgba(255,255,255,0.15);
 }
 
-/* Sheet List */
-.sheet-list .sheet-item {
+.sheet-item {
   background: rgba(255,255,255,0.05);
   padding: 15px;
   border-radius: 12px;

@@ -95,8 +95,14 @@ function renderPinned(sheets) {
     const card = document.createElement("div");
     card.className = "pinned-card";
     card.style.animationDelay = `${i * 0.05}s`;
+    const cat = detectCategory(sheet.name);
+    const borderColor = cat ? cat.color : "var(--accent)";
+    const catBadge = cat ? `<span class="cat-badge" style="background:${cat.color}22; color:${cat.color}; border-color:${cat.color}44">${cat.icon} ${cat.label}</span>` : "";
+    card.style.borderTopColor = borderColor;
     card.innerHTML = `
+      <div class="pinned-card-icon" style="color:${borderColor}">${cat ? cat.icon : "📄"}</div>
       <div class="pinned-card-name">${escapeHTML(sheet.name)}</div>
+      <div class="tile-badges" style="margin: 6px 0">${catBadge}</div>
       <div class="sheet-meta">
         ${sheet.owner ? `<span class="meta-item">👤 ${escapeHTML(sheet.owner)}</span>` : ""}
         ${sheet.lastModifiedDate ? `<span class="meta-item">🗓 ${escapeHTML(sheet.lastModifiedDate)}</span>` : ""}
@@ -109,6 +115,22 @@ function renderPinned(sheets) {
     card.addEventListener("click", () => openSheet(sheet.webLink));
     container.appendChild(card);
   });
+}
+
+// Category detection from sheet name
+function detectCategory(name) {
+  const n = name.toLowerCase();
+  if (n.includes("analysis"))   return { label: "Analysis",    icon: "📊", color: "#6366f1" };
+  if (n.includes("b2b"))        return { label: "B2B",         icon: "🤝", color: "#f97316" };
+  if (n.includes("acad"))       return { label: "Acad",        icon: "🎓", color: "#22c55e" };
+  if (n.includes("bws"))        return { label: "BWS",         icon: "📋", color: "#eab308" };
+  if (n.includes("ptm"))        return { label: "PTM",         icon: "👨‍👩‍👧", color: "#ec4899" };
+  if (n.includes("orientation"))return { label: "Orientation", icon: "🧭", color: "#14b8a6" };
+  if (n.includes("batch start"))return { label: "Batch Start", icon: "🚀", color: "#8b5cf6" };
+  if (n.includes("gen"))        return { label: "Gen",         icon: "📣", color: "#fb923c" };
+  if (n.includes("maharashtra") || n.includes(" mh") || n.startsWith("mh"))
+                                 return { label: "MH",          icon: "🗺️", color: "#0ea5e9" };
+  return null;
 }
 
 function renderList(sheets) {
@@ -126,22 +148,32 @@ function renderList(sheets) {
 
   sheets.forEach((sheet, i) => {
     const item = document.createElement("div");
-    item.className = "sheet-item";
+    item.className = "sheet-tile";
     item.style.animationDelay = `${i * 0.02}s`;
+
+    const cat = detectCategory(sheet.name);
+    const catBadge = cat
+      ? `<span class="cat-badge" style="background:${cat.color}22; color:${cat.color}; border-color:${cat.color}44">${cat.icon} ${cat.label}</span>`
+      : "";
+    const borderColor = cat ? cat.color : "rgba(255,255,255,0.08)";
+
+    item.style.borderLeftColor = borderColor;
+
     item.innerHTML = `
-      <div class="sheet-info">
-        <div class="sheet-dot"></div>
-        <div class="sheet-text">
-          <span class="sheet-name" title="${escapeAttr(sheet.name)}">${escapeHTML(sheet.name)}</span>
-          <div class="sheet-meta">
-            ${sheet.owner ? `<span class="meta-item">👤 ${escapeHTML(sheet.owner)}</span>` : ""}
-            ${sheet.lastModifiedDate ? `<span class="meta-item">🗓 ${escapeHTML(sheet.lastModifiedDate)}</span>` : ""}
-          </div>
+      <div class="tile-top">
+        <div class="tile-icon" style="background:${borderColor}22">${cat ? cat.icon : "📄"}</div>
+        <div class="tile-actions">
+          <button class="open-btn" onclick="event.stopPropagation(); openSheet('${escapeAttr(sheet.webLink)}')">Open ↗</button>
+          <button class="pin-btn" onclick="event.stopPropagation(); togglePin('${escapeAttr(sheet.name)}')">📌</button>
         </div>
       </div>
-      <div class="sheet-actions">
-        <button class="open-btn" onclick="event.stopPropagation(); openSheet('${escapeAttr(sheet.webLink)}')">Open ↗</button>
-        <button class="pin-btn" onclick="event.stopPropagation(); togglePin('${escapeAttr(sheet.name)}')">📌</button>
+      <div class="tile-name" title="${escapeAttr(sheet.name)}">${escapeHTML(sheet.name)}</div>
+      <div class="tile-badges">
+        ${catBadge}
+      </div>
+      <div class="tile-meta">
+        ${sheet.owner ? `<span class="meta-item">👤 ${escapeHTML(sheet.owner)}</span>` : ""}
+        ${sheet.lastModifiedDate ? `<span class="meta-item">🗓 ${escapeHTML(sheet.lastModifiedDate)}</span>` : ""}
       </div>
     `;
     item.addEventListener("click", () => openSheet(sheet.webLink));
@@ -329,40 +361,3 @@ function setTheme(theme) {
     });
   });
 })();
-
-// ===== LIVE TREND =====
-function openLiveTrend() {
-  const panel = document.getElementById('livePanel');
-  const overlay = document.getElementById('liveOverlay');
-  const frame = document.getElementById('liveTrendFrame');
-
-  // Set src only once to avoid reload every time
-  if (!frame.src || frame.src === 'about:blank' || frame.src === '') {
-    frame.src = 'Trend.html';
-  }
-
-  panel.classList.add('open');
-  overlay.classList.add('open');
-
-  // Mark menu item active
-  document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-  document.querySelectorAll('.sub-item').forEach(i => i.classList.remove('active'));
-  document.getElementById('liveTrendBtn').classList.add('active');
-}
-
-function closeLiveTrend() {
-  const panel = document.getElementById('livePanel');
-  const overlay = document.getElementById('liveOverlay');
-  panel.classList.remove('open');
-  overlay.classList.remove('open');
-
-  // Restore All Sheets as active
-  document.getElementById('liveTrendBtn').classList.remove('active');
-  const allItem = document.querySelector('[data-filter="all"]');
-  if (allItem) allItem.classList.add('active');
-}
-
-// Close with Escape key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeLiveTrend();
-});

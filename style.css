@@ -1,4 +1,4 @@
-/* ===== CSS VARIABLES ===== */
+/* ===== CSS VARIABLES — DARK (default) ===== */
 :root {
   --bg: #080c14;
   --bg2: #0d1321;
@@ -14,11 +14,53 @@
   --text-dim: #94a3b8;
   --success: #22c55e;
   --danger: #ef4444;
+  --sidebar-bg: rgba(8,12,20,0.95);
+  --auth-card-bg: rgba(13,19,33,0.9);
   --font-display: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --radius: 14px;
   --radius-sm: 10px;
   --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ===== LIGHT THEME ===== */
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg2: #f1f5f9;
+  --surface: rgba(0,0,0,0.04);
+  --surface-hover: rgba(0,0,0,0.07);
+  --border: rgba(0,0,0,0.08);
+  --border-bright: rgba(0,0,0,0.15);
+  --accent: #ea6c00;
+  --accent2: #f97316;
+  --accent-glow: rgba(249,115,22,0.2);
+  --text: #0f172a;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --sidebar-bg: rgba(255,255,255,0.98);
+  --auth-card-bg: rgba(255,255,255,0.98);
+}
+
+/* ===== EVE THEME (warm yellow - eye comfort) ===== */
+[data-theme="eve"] {
+  --bg: #fdf6e3;
+  --bg2: #faefd0;
+  --surface: rgba(180,130,40,0.08);
+  --surface-hover: rgba(180,130,40,0.14);
+  --border: rgba(180,130,40,0.18);
+  --border-bright: rgba(180,130,40,0.3);
+  --accent: #b45309;
+  --accent2: #d97706;
+  --accent-glow: rgba(180,83,9,0.2);
+  --text: #3b2a00;
+  --text-muted: #92713a;
+  --text-dim: #7a5c1e;
+  --success: #15803d;
+  --danger: #b91c1c;
+  --sidebar-bg: rgba(250,239,208,0.98);
+  --auth-card-bg: rgba(253,246,227,0.98);
 }
 
 /* ===== RESET ===== */
@@ -87,7 +129,7 @@ body {
 }
 
 .auth-card {
-  background: rgba(13,19,33,0.9);
+  background: var(--auth-card-bg);
   border: 1px solid var(--border-bright);
   border-radius: 24px;
   padding: 44px 40px;
@@ -253,7 +295,7 @@ body {
 .sidebar {
   width: 240px;
   min-height: 100vh;
-  background: rgba(8,12,20,0.95);
+  background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -335,6 +377,74 @@ body {
 
 .menu-icon {
   font-size: 16px;
+}
+
+.nav-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 4px;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  padding: 4px 14px 2px;
+  font-weight: 600;
+}
+
+.menu-item.has-sub {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.menu-item.has-sub span:nth-child(2) {
+  flex: 1;
+}
+
+.chevron {
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform var(--transition);
+  margin-left: auto;
+}
+
+.chevron.open {
+  transform: rotate(90deg);
+}
+
+.sub-menu {
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 16px;
+  margin-top: 2px;
+}
+
+.sub-menu.open {
+  display: flex;
+}
+
+.sub-item {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 2px solid transparent;
+}
+
+.sub-item:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.sub-item.active {
+  color: var(--accent2);
+  border-left-color: var(--accent);
+  background: rgba(249,115,22,0.08);
 }
 
 .sidebar-bottom {
@@ -581,6 +691,31 @@ body {
   min-width: 0;
 }
 
+.sheet-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.sheet-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.meta-item {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
 .sheet-dot {
   width: 8px; height: 8px;
   background: var(--accent);
@@ -699,3 +834,72 @@ body {
 }
 .section:nth-child(2) { animation-delay: 0.1s; }
 .section:nth-child(3) { animation-delay: 0.2s; }
+
+/* ===== THEME SWITCHER ===== */
+.theme-switcher {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.theme-btn {
+  flex: 1;
+  padding: 6px 4px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+.theme-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.theme-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Eve theme overrides for grid/glows */
+[data-theme="eve"] .bg-grid {
+  background-image:
+    linear-gradient(rgba(180,130,40,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180,130,40,0.07) 1px, transparent 1px);
+}
+[data-theme="eve"] .glow-1 { background: rgba(180,83,9,0.1); }
+[data-theme="eve"] .glow-2 { background: rgba(120,80,0,0.07); }
+
+/* Light theme overrides for grid/glows */
+[data-theme="light"] .bg-grid {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+}
+[data-theme="light"] .glow-1 { background: rgba(249,115,22,0.08); }
+[data-theme="light"] .glow-2 { background: rgba(99,102,241,0.05); }
+
+/* Light/Eve: fix pinned card gradient */
+[data-theme="light"] .pinned-card,
+[data-theme="eve"] .pinned-card {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+/* Toast theme fix */
+[data-theme="light"] .toast,
+[data-theme="eve"] .toast {
+  background: var(--bg2);
+  color: var(--text);
+}

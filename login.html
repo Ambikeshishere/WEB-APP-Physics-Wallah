@@ -51,6 +51,11 @@
     </div>
   </div>
 
+  <script>
+    // Apply saved theme on login page too
+    const t = localStorage.getItem('pwTheme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  </script>
   <script src="auth.js"></script>
 </body>
 </html>

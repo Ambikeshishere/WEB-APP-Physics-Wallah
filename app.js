@@ -97,6 +97,10 @@ function renderPinned(sheets) {
     card.style.animationDelay = `${i * 0.05}s`;
     card.innerHTML = `
       <div class="pinned-card-name">${escapeHTML(sheet.name)}</div>
+      <div class="sheet-meta">
+        ${sheet.owner ? `<span class="meta-item">👤 ${escapeHTML(sheet.owner)}</span>` : ""}
+        ${sheet.lastModifiedDate ? `<span class="meta-item">🗓 ${escapeHTML(sheet.lastModifiedDate)}</span>` : ""}
+      </div>
       <div class="pinned-card-footer">
         <span class="pinned-open">Open ↗</span>
         <button class="unpin-btn" onclick="event.stopPropagation(); togglePin('${escapeAttr(sheet.name)}')">Unpin</button>
@@ -127,7 +131,13 @@ function renderList(sheets) {
     item.innerHTML = `
       <div class="sheet-info">
         <div class="sheet-dot"></div>
-        <span class="sheet-name" title="${escapeAttr(sheet.name)}">${escapeHTML(sheet.name)}</span>
+        <div class="sheet-text">
+          <span class="sheet-name" title="${escapeAttr(sheet.name)}">${escapeHTML(sheet.name)}</span>
+          <div class="sheet-meta">
+            ${sheet.owner ? `<span class="meta-item">👤 ${escapeHTML(sheet.owner)}</span>` : ""}
+            ${sheet.lastModifiedDate ? `<span class="meta-item">🗓 ${escapeHTML(sheet.lastModifiedDate)}</span>` : ""}
+          </div>
+        </div>
       </div>
       <div class="sheet-actions">
         <button class="open-btn" onclick="event.stopPropagation(); openSheet('${escapeAttr(sheet.webLink)}')">Open ↗</button>
@@ -184,16 +194,22 @@ function logout() {
 document.getElementById("searchInput").addEventListener("input", function () {
   const query = this.value.toLowerCase().trim();
 
-  if (!query) {
-    renderSheets(allSheets);
-    return;
+  let sheets = [...allSheets];
+
+  // Apply category filter first
+  if (currentFilter !== "all" && currentFilter !== "pinned") {
+    sheets = sheets.filter(s => s.name.toLowerCase().includes(currentFilter.toLowerCase()));
+  } else if (currentFilter === "pinned") {
+    const pinned = getPinned();
+    sheets = sheets.filter(s => pinned.includes(s.name));
   }
 
-  const filtered = allSheets.filter(s =>
-    s.name.toLowerCase().includes(query)
-  );
+  // Then apply search
+  if (query) {
+    sheets = sheets.filter(s => s.name.toLowerCase().includes(query));
+  }
 
-  renderSheets(filtered);
+  renderSheets(sheets);
 });
 
 // ===== SKELETON LOADING =====
@@ -221,13 +237,95 @@ function escapeAttr(str) {
   return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
 }
 
-// ===== SIDEBAR NAV =====
-document.querySelectorAll(".menu-item").forEach(item => {
+// ===== SIDEBAR NAV & FILTER =====
+let currentFilter = "all";
+
+function toggleSub(id) {
+  const sub = document.getElementById(id);
+  const chevron = document.getElementById("chevron-" + id);
+  sub.classList.toggle("open");
+  chevron.classList.toggle("open");
+}
+
+function setFilter(filter) {
+  currentFilter = filter;
+
+  // Update active states - menu items
+  document.querySelectorAll(".menu-item").forEach(i => i.classList.remove("active"));
+  document.querySelectorAll(".sub-item").forEach(i => i.classList.remove("active"));
+
+  const matched = document.querySelector(`[data-filter="${filter}"]`);
+  if (matched) matched.classList.add("active");
+
+  // Update page title
+  const titles = {
+    all: "Sheet Library", pinned: "Pinned Sheets",
+    analysis: "Analysis", b2b: "B2B", acad: "Acad", bws: "BWS",
+    comms: "Comms", gen: "Gen", ptm: "PTM", orientation: "Orientation",
+    "batch start": "Batch Start", mh: "MH", maharashtra: "Maharashtra"
+  };
+  document.querySelector(".page-title").innerText = titles[filter] || "Sheet Library";
+
+  // Clear search
+  document.getElementById("searchInput").value = "";
+
+  applyFilter();
+}
+
+function applyFilter() {
+  let sheets = [...allSheets];
+
+  if (currentFilter === "all") {
+    renderSheets(sheets);
+    return;
+  }
+
+  if (currentFilter === "pinned") {
+    const pinned = getPinned();
+    renderSheets(sheets.filter(s => pinned.includes(s.name)));
+    return;
+  }
+
+  // Keyword filter on sheet name
+  const keyword = currentFilter.toLowerCase();
+  renderSheets(sheets.filter(s => s.name.toLowerCase().includes(keyword)));
+}
+
+// Attach click to all menu items and sub items
+document.querySelectorAll(".menu-item:not(.has-sub)").forEach(item => {
   item.addEventListener("click", function () {
-    document.querySelectorAll(".menu-item").forEach(i => i.classList.remove("active"));
-    this.classList.add("active");
+    setFilter(this.dataset.filter);
+  });
+});
+
+document.querySelectorAll(".sub-item").forEach(item => {
+  item.addEventListener("click", function (e) {
+    e.stopPropagation();
+    setFilter(this.dataset.filter);
   });
 });
 
 // ===== INIT =====
 fetchSheets();
+
+// ===== THEME =====
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('pwTheme', theme);
+
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.theme === theme);
+  });
+}
+
+// Apply saved theme on load
+(function () {
+  const saved = localStorage.getItem('pwTheme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  // Wait for DOM to mark correct button active
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.theme === saved);
+    });
+  });
+})();

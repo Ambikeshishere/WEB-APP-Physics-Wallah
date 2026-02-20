@@ -19,25 +19,72 @@
   <aside class="sidebar">
     <div class="sidebar-top">
       <div class="logo">
-        <span class="logo-icon">📖</span>
+        <span class="logo-icon">⚡</span>
         <div>
           <div class="logo-text">PW Vidyapeeth</div>
           <div class="logo-sub">Maharashtra</div>
         </div>
       </div>
       <nav class="sidebar-nav">
-        <div class="menu-item active">
+        <div class="menu-item active" data-filter="all">
           <span class="menu-icon">📂</span>
           All Sheets
         </div>
-        <div class="menu-item" id="pinnedNav">
+        <div class="menu-item" data-filter="pinned">
           <span class="menu-icon">📌</span>
           Pinned
         </div>
+
+        <div class="nav-divider"></div>
+        <div class="nav-section-label">Categories</div>
+
+        <div class="menu-item" data-filter="analysis">
+          <span class="menu-icon">📊</span>
+          Analysis
+        </div>
+        <div class="menu-item" data-filter="b2b">
+          <span class="menu-icon">🤝</span>
+          B2B
+        </div>
+        <div class="menu-item" data-filter="acad">
+          <span class="menu-icon">🎓</span>
+          Acad
+        </div>
+        <div class="menu-item" data-filter="bws">
+          <span class="menu-icon">📋</span>
+          BWS
+        </div>
+
+        <div class="menu-item has-sub" data-filter="comms" onclick="toggleSub('comms-sub')">
+          <span class="menu-icon">📣</span>
+          <span>Comms</span>
+          <span class="chevron" id="chevron-comms-sub">▸</span>
+        </div>
+        <div class="sub-menu" id="comms-sub">
+          <div class="sub-item" data-filter="gen">Gen</div>
+          <div class="sub-item" data-filter="ptm">PTM</div>
+          <div class="sub-item" data-filter="orientation">Orientation</div>
+          <div class="sub-item" data-filter="batch start">Batch Start</div>
+        </div>
+
+        <div class="menu-item has-sub" data-filter="mh" onclick="toggleSub('mh-sub')">
+          <span class="menu-icon">🗺️</span>
+          <span>MH</span>
+          <span class="chevron" id="chevron-mh-sub">▸</span>
+        </div>
+        <div class="sub-menu" id="mh-sub">
+          <div class="sub-item" data-filter="maharashtra">Maharashtra</div>
+        </div>
+
       </nav>
     </div>
 
     <div class="sidebar-bottom">
+      <div class="theme-switcher">
+        <button class="theme-btn active" data-theme="dark" onclick="setTheme('dark')">🌙 Dark</button>
+        <button class="theme-btn" data-theme="light" onclick="setTheme('light')">☀️ Light</button>
+        <button class="theme-btn" data-theme="eve" onclick="setTheme('eve')">🌿 Eve</button>
+      </div>
       <div class="user-badge" id="userBadge"></div>
       <button class="logout-btn" onclick="logout()">
         <span>↩</span> Logout

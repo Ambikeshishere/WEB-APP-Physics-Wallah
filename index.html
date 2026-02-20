@@ -1,51 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PW Sheet Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <script>
   const user = localStorage.getItem("loggedUser");
-  if (!user) {
-    window.location.href = "login.html";
-  }
+  if (!user) window.location.href = "login.html";
 </script>
 
 <div class="app">
 
   <aside class="sidebar">
-    <div class="logo">📊 PW</div>
+    <div class="sidebar-top">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">PW</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="menu-item active">
+          <span class="menu-icon">📂</span>
+          All Sheets
+        </div>
+        <div class="menu-item" id="pinnedNav">
+          <span class="menu-icon">📌</span>
+          Pinned
+        </div>
+      </nav>
+    </div>
 
-    <nav>
-      <div class="menu-item active">All Sheets</div>
-    </nav>
-
-    <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="sidebar-bottom">
+      <div class="user-badge" id="userBadge"></div>
+      <button class="logout-btn" onclick="logout()">
+        <span>↩</span> Logout
+      </button>
+    </div>
   </aside>
 
   <main class="content">
 
     <div class="topbar">
-      <input type="text" id="searchInput" placeholder="Search sheets...">
-      <div id="userInfo"></div>
+      <div class="topbar-left">
+        <h2 class="page-title">Sheet Library</h2>
+        <span class="sheet-count" id="sheetCount">— sheets</span>
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search sheets...">
+      </div>
     </div>
 
-    <section>
-      <h3>Pinned</h3>
+    <section class="section" id="pinnedSection">
+      <div class="section-header">
+        <h3>📌 Pinned</h3>
+        <span class="section-sub">Your quick-access sheets</span>
+      </div>
       <div id="pinnedContainer" class="pinned-grid"></div>
+      <div id="pinnedEmpty" class="empty-state" style="display:none;">
+        <p>No pinned sheets yet. Click 📌 on any sheet to pin it.</p>
+      </div>
     </section>
 
-    <section>
-      <h3>All Sheets</h3>
+    <section class="section">
+      <div class="section-header">
+        <h3>📁 All Sheets</h3>
+        <span class="section-sub" id="allCount"></span>
+      </div>
       <div id="sheetList" class="sheet-list"></div>
+      <div id="listEmpty" class="empty-state" style="display:none;">
+        <p>No sheets found for your search.</p>
+      </div>
     </section>
 
   </main>
 
 </div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
 
 <script src="app.js"></script>
 </body>

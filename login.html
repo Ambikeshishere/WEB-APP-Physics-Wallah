@@ -1,23 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PW Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PW Dashboard — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-body">
 
-<div class="auth-card">
-  <h2>PW Sheet Dashboard</h2>
+  <div class="bg-grid"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
 
-  <input type="email" id="email" placeholder="Enter @pw.live email">
-  <input type="password" id="password" placeholder="Password">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-icon">⚡</div>
+        <div>
+          <span class="brand-name">PW</span>
+          <span class="brand-tag">Dashboard</span>
+        </div>
+      </div>
 
-  <button onclick="signIn()">Sign In</button>
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-sub">Sign in with your @pw.live account</p>
 
-  <p id="authMessage"></p>
-</div>
+      <div class="input-group">
+        <label>Email</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" id="email" placeholder="you@pw.live" autocomplete="email">
+        </div>
+      </div>
 
-<script src="auth.js"></script>
+      <div class="input-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+      </div>
+
+      <button class="btn-signin" onclick="signIn()">
+        <span>Sign In</span>
+        <span class="btn-arrow">→</span>
+      </button>
+
+      <p id="authMessage" class="auth-msg"></p>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
 </body>
 </html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Sheets Hub</title>
+
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <h2>Sheets Hub</h2>
+      <button id="collapseBtn">
+        <i data-lucide="chevron-left"></i>
+      </button>
+    </div>
+
+    <ul id="menuList" class="menu">
+      <li data-group="all" class="active">
+        <i data-lucide="layout-grid"></i>
+        <span>All</span>
+      </li>
+      <li data-group="analysis">
+        <i data-lucide="bar-chart-3"></i>
+        <span>Analysis</span>
+      </li>
+      <li data-group="mh">
+        <i data-lucide="map"></i>
+        <span>MH</span>
+      </li>
+      <li data-group="emi">
+        <i data-lucide="credit-card"></i>
+        <span>EMI</span>
+      </li>
+      <li data-group="bws">
+        <i data-lucide="database"></i>
+        <span>BWS</span>
+      </li>
+      <li data-group="comms">
+        <i data-lucide="message-square"></i>
+        <span>Comms</span>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <input type="text" id="searchInput" placeholder="Search sheets..." />
+    </div>
+
+    <section id="pinnedSection" class="hidden">
+      <h3>Pinned</h3>
+      <div id="pinnedGrid" class="grid"></div>
+    </section>
+
+    <section>
+      <h3>Sheets</h3>
+      <div id="listContainer" class="list"></div>
+    </section>
+
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

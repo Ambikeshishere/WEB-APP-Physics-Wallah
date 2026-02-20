@@ -1,4 +1,6 @@
-function signUp() {
+const USER_DB_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1ZpguueahXEwD-ds3aBzWmrKNZJxYpWYB70tT72xLpbYEufLk6u3yNgt6s5eAWfoxhVsIyJBuJPVD/pub?gid=0&single=true&output=csv";
+
+async function signIn() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
   const message = document.getElementById("authMessage");
@@ -8,35 +10,32 @@ function signUp() {
     return;
   }
 
-  if (password.length < 4) {
-    message.innerText = "Password must be at least 4 characters.";
-    return;
-  }
+  try {
+    const res = await fetch(USER_DB_URL);
+    const text = await res.text();
 
-  const users = JSON.parse(localStorage.getItem("users")) || {};
+    const rows = text.split("\n").slice(1);
 
-  if (users[email]) {
-    message.innerText = "User already exists.";
-    return;
-  }
+    let validUser = false;
 
-  users[email] = password;
-  localStorage.setItem("users", JSON.stringify(users));
+    rows.forEach(row => {
+      const cols = row.split(",");
+      const dbEmail = cols[0]?.trim();
+      const dbPassword = cols[1]?.trim();
 
-  message.innerText = "Account created. You can now sign in.";
-}
+      if (dbEmail === email && dbPassword === password) {
+        validUser = true;
+      }
+    });
 
-function signIn() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const message = document.getElementById("authMessage");
+    if (validUser) {
+      localStorage.setItem("loggedUser", email);
+      window.location.href = "index.html";
+    } else {
+      message.innerText = "Invalid email or password.";
+    }
 
-  const users = JSON.parse(localStorage.getItem("users")) || {};
-
-  if (users[email] && users[email] === password) {
-    localStorage.setItem("loggedUser", email);
-    window.location.href = "index.html";
-  } else {
-    message.innerText = "Invalid email or password.";
+  } catch (err) {
+    message.innerText = "Error connecting to server.";
   }
 }

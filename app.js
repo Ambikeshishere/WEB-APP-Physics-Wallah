@@ -329,3 +329,40 @@ function setTheme(theme) {
     });
   });
 })();
+
+// ===== LIVE TREND =====
+function openLiveTrend() {
+  const panel = document.getElementById('livePanel');
+  const overlay = document.getElementById('liveOverlay');
+  const frame = document.getElementById('liveTrendFrame');
+
+  // Set src only once to avoid reload every time
+  if (!frame.src || frame.src === 'about:blank' || frame.src === '') {
+    frame.src = 'trend.html';
+  }
+
+  panel.classList.add('open');
+  overlay.classList.add('open');
+
+  // Mark menu item active
+  document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.sub-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('liveTrendBtn').classList.add('active');
+}
+
+function closeLiveTrend() {
+  const panel = document.getElementById('livePanel');
+  const overlay = document.getElementById('liveOverlay');
+  panel.classList.remove('open');
+  overlay.classList.remove('open');
+
+  // Restore All Sheets as active
+  document.getElementById('liveTrendBtn').classList.remove('active');
+  const allItem = document.querySelector('[data-filter="all"]');
+  if (allItem) allItem.classList.add('active');
+}
+
+// Close with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLiveTrend();
+});

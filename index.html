@@ -76,6 +76,13 @@
           <div class="sub-item" data-filter="maharashtra">Maharashtra</div>
         </div>
 
+        <div class="nav-divider"></div>
+        <div class="menu-item" id="liveTrendBtn" onclick="openLiveTrend()">
+          <span class="menu-icon">📈</span>
+          Live Trend
+          <span class="live-dot"></span>
+        </div>
+
       </nav>
     </div>
 
@@ -130,6 +137,16 @@
   </main>
 
 </div>
+
+<!-- Live Trend Panel -->
+<div class="live-panel" id="livePanel">
+  <div class="live-panel-header">
+    <span class="live-panel-title">📈 Live Trend</span>
+    <button class="live-panel-close" onclick="closeLiveTrend()">✕</button>
+  </div>
+  <iframe id="liveTrendFrame" src="" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class="live-overlay" id="liveOverlay" onclick="closeLiveTrend()"></div>
 
 <!-- Toast notification -->
 <div class="toast" id="toast"></div>
